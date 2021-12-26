@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html dir="ltr" lang="bg">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="@ViewData["Description"]">
+    @*<environment include="Development">*@
+        <link rel="stylesheet" href="~/css/photoswipe.css">
+        <link rel="stylesheet" href="~/css/photoswipe-default-skin.css">
+        <link rel="stylesheet" href="~/css/main.css" asp-append-version="true">
+        <link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true">
+    @*</environment>*@
+</head>
+<body>
+
+    <header>
+        <div>
+            <div id="bars"><a href="#"><img src="~/images/bars.svg" alt="Навигация"></a></div>
+            <div><img src="~/images/logo.svg" alt="VeganMap лого"></div>
+            <div id="main-menu">
+                <nav>
+                    <ul>
+                        <li><a asp-page="index" class="@Html.Raw((string)ViewData["Page"] == "Index" ? "active" : string.Empty)">Начало</a></li>
+                        <li class="dropdown-container">
+                            <a href="#" class="@Html.Raw((string)ViewData["Page"] == "City" ? "active" : string.Empty)">Градове</a>
+                            <ul class="dropdown dropdown-large hidden">
+                                @foreach (var city in (IList<VeganMap.Models.City>)ViewData["Cities"])
+                                {
+                                    <li><a asp-page="city" asp-route-acronym="@city.Acronym">@city.Name</a></li>
+                                }
+                            </ul>
+                        </li>
+                        <li><a asp-page="contact" class="@Html.Raw((string)ViewData["Page"] == "Contact" ? "active" : string.Empty)">Контакти</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <div>
+            <div>
+                <strong>Последвайте ни</strong>
+                <ul>
+                    <li><a href="#"><img src="~/images/facebook2.svg" alt="facebook"></a></li>
+                    <li><a href="#"><img src="~/images/instagram2.svg" alt="instagram"></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    @*<environment include="Development">*@
+        <script src="~/js/photoswipe.min.js" asp-append-version="true"></script>
+        <script src="~/js/photoswipe-ui-default.min.js" asp-append-version="true"></script>
+        <script src="~/js/funcs.js" asp-append-version="true"></script>
+        <script src="~/js/main.js" asp-append-version="true"></script>
+    @*</environment>*@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html><!-- https://www.templatemonsterpreview.com/demo/86398.html?_gl=1*1gcgwly*_ga*MTA3ODA1MTk1LjE2MzE2ODc3MzM.*_ga_FTPYEGT5LY*MTYzMjkxNzEwMC4zLjEuMTYzMjkxNzE1My43&_ga=2.231594719.1558686589.1632917101-107805195.1631687733&_gac=1.61032414.1632917112.CjwKCAjwndCKBhAkEiwAgSDKQfa1ObnH7wbtykSt_052pCQrGysvZvB6v05S1bcEua5Cf5XDt8H19RoCH70QAvD_BwE -->

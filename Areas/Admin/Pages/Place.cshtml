@@ -1,0 +1,401 @@
+﻿@page
+@model VeganMap.Areas.Admin.Pages.PlaceModel
+@{
+    ViewData["Page"] = "Place";
+}
+
+<div class="container">
+    @if (Model.IsCreate)
+    {
+        <p class="fs-3">Добавяне на място</p>
+    }
+    else
+    {
+        <p class="fs-3">
+            Редактиране на @Model.Place.Name
+            <a class="btn btn-outline-primary btn-sm" asp-area="" asp-page="place" asp-route-acronym="@Model.Place.Acronym" target="_blank">Отвори →</a>
+        </p>
+    }
+    <form method="post" asp-area="admin" asp-page="place" class="row needs-validation" novalidate>
+        <div class="row">
+            <div class="col">
+                @if (Model.HasErrorMessage)
+                {
+                    Model.HasErrorMessage = false;
+                    <div class="alert alert-danger" role="alert">Грешка при записване на данните.</div>
+                }
+                else if (Model.HasSuccessMessage)
+                {
+                    <div class="alert alert-success" role="alert">Данните са записани успешно.</div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3 has-validation">
+                    <input asp-for="Place.Name" class="form-control" placeholder="Име на място" required>
+                    <label asp-for="Place.Name">Име на място</label>
+                    <span asp-validation-for="Place.Name" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Acronym" class="form-control" placeholder="Акроним">
+                    <label asp-for="Place.Acronym">Акроним</label>
+                    <span asp-validation-for="Place.Acronym" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.PageTitle" class="form-control" placeholder="Заглавие на страница">
+                    <label asp-for="Place.PageTitle">Заглавие на страница</label>
+                    <span asp-validation-for="Place.PageTitle" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.PageDescription" class="form-control" placeholder="Описание на страница">
+                    <label asp-for="Place.PageDescription">Описание на страница</label>
+                    <span asp-validation-for="Place.PageDescription" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Place.ShortDescription" class="form-control" placeholder="Кратко описание" style="height: 100px"></textarea>
+                    <label asp-for="Place.ShortDescription">Кратко описание</label>
+                    <span asp-validation-for="Place.ShortDescription" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating">
+                    <textarea asp-for="Place.FullDescription" class="form-control" placeholder="Пълно описание" style="height: 100px"></textarea>
+                    <label asp-for="Place.FullDescription">Пълно описание</label>
+                    <span asp-validation-for="Place.FullDescription" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select asp-for="Place.Active" asp-items="Model.NoYesOptions" class="form-control"></select>
+                    <label asp-for="Place.Active">Активно</label>
+                    <span asp-validation-for="Place.Active" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select asp-for="Place.Type" asp-items="Model.TypeSelectList" class="form-control"></select>
+                    <label asp-for="Place.Type">Тип</label>
+                    <span asp-validation-for="Place.Type" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Rating" class="form-control" placeholder="Рейтинг">
+                    <label asp-for="Place.Rating">Рейтинг</label>
+                    <span asp-validation-for="Place.Rating" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.PriceRange" class="form-control" placeholder="Ценови диапазон">
+                    <label asp-for="Place.PriceRange">Ценови диапазон</label>
+                    <span asp-validation-for="Place.PriceRange" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select asp-for="Place.CityId" asp-items="Model.CitySelectList" class="form-control"></select>
+                    <label asp-for="Place.City">Град</label>
+                    <span asp-validation-for="Place.City" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Address" class="form-control" placeholder="Адрес">
+                    <label asp-for="Place.Address">Адрес</label>
+                    <span asp-validation-for="Place.Address" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Phone" class="form-control" placeholder="Телефон">
+                    <label asp-for="Place.Phone">Телефон</label>
+                    <span asp-validation-for="Place.Phone" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Website" class="form-control" placeholder="Уеб сайт">
+                    <label asp-for="Place.Website">Уеб сайт</label>
+                    <span asp-validation-for="Place.Website" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Facebook" class="form-control" placeholder="Facebook">
+                    <label asp-for="Place.Facebook">Facebook</label>
+                    <span asp-validation-for="Place.Facebook" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Instagram" class="form-control" placeholder="Instagram">
+                    <label asp-for="Place.Instagram">Instagram</label>
+                    <span asp-validation-for="Place.Instagram" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Lat" class="form-control" placeholder="Google maps Lat">
+                    <label asp-for="Place.Lat">Google maps Lat</label>
+                    <span asp-validation-for="Place.Lat" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.Lng" class="form-control" placeholder="Google maps Lng">
+                    <label asp-for="Place.Lng">Google maps Lng</label>
+                    <span asp-validation-for="Place.Lng" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="Place.GoogleMapsShare" class="form-control" placeholder="Google maps share url">
+                    <label asp-for="Place.GoogleMapsShare">Google maps share url</label>
+                    <span asp-validation-for="Place.GoogleMapsShare" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <input asp-for="Place.Id" type="hidden">
+            <div class="col-12">
+                @{
+                    var submitBtnText = Model.IsCreate ? "Добави" : "Редактирай";
+                }
+                <button class="btn btn-primary" type="submit">@submitBtnText</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+@if (Model.IsEdit)
+{
+    <div class="container mt-5">
+        <p class="fs-4">Работно време</p>
+        <form method="post" asp-area="admin" asp-page="place" asp-page-handler="WorkHours" class="row">
+            <div class="row">
+                <div class="col">
+                    <table class="table table-sm">
+                        <tr>
+                            <th scope="col">Понеделник</th>
+                            <th scope="col">Вторник</th>
+                            <th scope="col">Сряда</th>
+                            <th scope="col">Четвъртък</th>
+                            <th scope="col">Петък</th>
+                            <th scope="col">Събота</th>
+                            <th scope="col">Неделя</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourMonday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesMonday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourMonday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesMonday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourTuesday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesTuesday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourTuesday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesTuesday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourWednesday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesWednesday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourWednesday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesWednesday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourThursday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesThursday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourThursday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesThursday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourFriday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesFriday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourFriday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesFriday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourSaturday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesSaturday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourSaturday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesSaturday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">от</span>
+                                    <select class="form-select form-select-sm" asp-for="FromHourSunday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="FromMinutesSunday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">до</span>
+                                    <select class="form-select form-select-sm" asp-for="ToHourSunday" asp-items="Model.WorkHoursSelectList">
+                                    </select>
+                                    <select class="form-select form-select-sm" asp-for="ToMinutesSunday" asp-items="Model.WorkMinutesSelectList">
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <input asp-for="Place.Id" type="hidden">
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Запази</button>
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+@if (Model.IsEdit)
+{
+    <div class="container mt-5">
+        <p class="fs-4">Снимки</p>
+        <form method="post" enctype="multipart/form-data" asp-area="admin" asp-page="place" asp-page-handler="Picture" class="row">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label asp-for="FormFiles" class="form-label">Избери снимки</label>
+                        <input class="form-control" type="file" asp-for="FormFiles" multiple>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input asp-for="Place.Id" type="hidden">
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Запази</button>
+                </div>
+            </div>
+        </form>
+        <div id="place-image-container" class="row mt-5">
+            <ul class="pl-0">
+                @foreach (var placePicture in Model.Place.Pictures)
+                {
+                    <li>
+                        <a href="/images/places/@Model.Place.Id/@placePicture.FullSizeFilename" target="_blank"><img src="~/images/places/@Model.Place.Id/@placePicture.ThumbFilename" class="img-thumbnail"></a>
+                        <div class="btn-group" role="group">
+                            <a asp-page-handler="DeletePicture" asp-route-pictureId="@placePicture.Id" class="btn btn-danger btn-sm delete-picture">Изтрии</a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+@section scripts {
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+
+        var validationErrorFields = document.getElementsByClassName('input-validation-error');
+        for (var i = 0; i < validationErrorFields.length; i++) {
+            validationErrorFields[i].classList.add('is-invalid');
+        }
+
+        var deletePictureButtons = document.getElementsByClassName('delete-picture');
+        for (var i = 0; i < deletePictureButtons.length; i++) {
+            deletePictureButtons[i].onclick = function(e) {
+                if (confirm('Изтрии снимката?') != true) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        }
+
+    }, false);
+</script>
+}

@@ -1,0 +1,166 @@
+﻿@page "{acronym}"
+@using VeganMap.Models
+@model VeganMap.Pages.PlaceModel
+@{
+    ViewData["Title"] = Model.Place.PageTitle;
+    ViewData["Description"] = Model.Place.PageDescription;
+    ViewData["Page"] = "City";
+}
+
+<section id="breadcrumbs">
+    <div>
+        <ul>
+            <li><a asp-page="index">Начало</a></li>
+            <li><a asp-page="city" asp-route-acronym="@Model.Place.City.Acronym">София</a></li>
+            <li><a asp-page="place" asp-route-acronym="@Model.Place.Acronym">@Model.Place.Name</a></li>
+        </ul>
+    </div>
+</section>
+
+<section id="place-container">
+    <div>
+        <div id="place-container-left">
+            <h1>@Model.Place.Name
+                @if (Model.Place.Type == PlaceTypeEnum.Vegan)
+                {
+                    <span class="tooltip"><img src="~/images/vegan.svg" alt="Веган"><span class="tooltiptext">Само веган храна</span></span>
+                }
+            </h1>
+            <div id="place-container-left-map">
+                <div id="map" data-places="@Model.PlacesData"></div>
+                <div>
+                    <table>
+                        <tr>
+                            <td><a href="@Model.Place.GoogleMapsShare" target="_blank" rel="nofollow"><span><img src="~/images/location.svg" alt="Адрес"></span></a></td>
+                            <td><span>Адрес:</span><a href="@Model.Place.GoogleMapsShare" target="_blank" rel="nofollow">гр. @Model.Place.City.Name, @Model.Place.Address</a></td>
+                        </tr>
+                        @if (!string.IsNullOrEmpty(Model.Place.Phone))
+                        {
+                            <tr>
+                                <td><a href="tel:@Model.Place.Phone"><span><img src="~/images/phone.svg" alt="Телефон за контакт"></span></a></td>
+                                <td><span>Телефон:</span><a href="tel:@Model.Place.Phone">@Model.Place.Phone</a></td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Place.Website))
+                        {
+                            <tr>
+                                <td><a href="@Model.Place.Website" target="_blank" rel="nofollow"><span><img src="~/images/www2.svg" alt="Web сайт"></span></a></td>
+                                <td><span>Web сайт</span><a href="@Model.Place.Website" target="_blank" rel="nofollow">@Model.Place.Website</a></td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Place.Facebook))
+                        {
+                            <tr>
+                                <td><a href="https://www.facebook.com/@Model.Place.Facebook" target="_blank" rel="nofollow"><span><img src="~/images/facebook3.svg" alt="Facebook профил"></span></a></td>
+                                <td><span>Facebook</span><a href="https://www.facebook.com/@Model.Place.Facebook" target="_blank" rel="nofollow">@Model.Place.Facebook</a></td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.Place.Instagram))
+                        {
+                            <tr>
+                                <td><a href="https://www.instagram.com/@Model.Place.Instagram" target="_blank" rel="nofollow"><span><img src="~/images/instagram3.svg" alt="Instagram профил"></span></a></td>
+                                <td><span>Instagram</span><a href="https://www.instagram.com/@Model.Place.Instagram" target="_blank" rel="nofollow">@Model.Place.Instagram</a></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+            <div id="place-container-left-description">@Html.Raw(Model.Place.FullDescription)</div>
+            <div id="place-container-left-pictures">
+                <ul>
+                    @{
+                        int picIndex = -1;
+                    }
+                    @foreach (var placePicture in Model.Place.Pictures)
+                    {
+                        picIndex++;
+                        <li><a href="~/images/places/@placePicture.PlaceId/@placePicture.FullSizeFilename" data-index="@picIndex" class="gallery"><img src="~/images/places/@placePicture.PlaceId/@placePicture.ThumbFilename" data-src="/images/places/@placePicture.PlaceId/@placePicture.FullSizeFilename" data-width="@placePicture.FullSizeWidth" data-height="@placePicture.FullSizeHeight" alt="Снимка"></a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div id="place-container-right">
+            <div>
+                <strong>Работно време</strong>
+                <b>
+                    <img src="~/images/clock.svg" alt="Работно време">
+                    @{
+                        var currentWorkingDay = Model.Place.WorkHours.FirstOrDefault(x => x.DayOfWeek == DateTime.Today.DayOfWeek);
+                        if (currentWorkingDay != null
+                        && currentWorkingDay.FromHour < DateTime.Now.Hour
+                        && currentWorkingDay.ToHour > DateTime.Now.Hour)
+                        {
+                            @:Отворено в момента
+                        }
+                        else
+                        {
+                            @:Затворено в момента
+                        }
+                    }
+                </b>
+                <ul id="place-worhours">
+                    @{
+                        var dayMapping = new Dictionary<DayOfWeek, string>
+            {
+                [DayOfWeek.Monday] = "понеделник",
+                [DayOfWeek.Tuesday] = "вторник",
+                [DayOfWeek.Wednesday] = "сряда",
+                [DayOfWeek.Thursday] = "четвъртък",
+                [DayOfWeek.Friday] = "петък",
+                [DayOfWeek.Saturday] = "събота",
+                [DayOfWeek.Sunday] = "неделя",
+            };
+                        var sortedWorkHours = Model.Place.WorkHours.OrderBy(x => (int)x.DayOfWeek).ToList();
+                        if (sortedWorkHours.Any() && sortedWorkHours.First().DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            var sunday = sortedWorkHours.First();
+                            sortedWorkHours = sortedWorkHours.Skip(1).ToList();
+                            sortedWorkHours.Add(sunday);
+                        }
+                    }
+                    @foreach (var workHour in sortedWorkHours)
+                    {
+                        var b = workHour.DayOfWeek == DateTime.Today.DayOfWeek;
+                        <li>@Html.Raw(b ? "<b>" : string.Empty)<span>@dayMapping[workHour.DayOfWeek]</span>@workHour.FromHour.ToString("D2"):@workHour.FromMinute.ToString("D2")ч. - @workHour.ToHour.ToString("D2"):@workHour.ToMinute.ToString("D2")ч.@Html.Raw(b ? "</b>" : string.Empty)</li>
+                    }
+                </ul>
+            </div>
+            @if (Model.Place.Rating != null)
+            {
+                <div>
+                    <strong>Рейтинг</strong>
+                    <div id="place-rating" class="tooltip">
+                        @for (var i = 0; i < Math.Truncate(Model.Place.Rating.Value); i++)
+                        {
+                            <img src="~/images/rating.svg" alt="Оценка">
+                        }
+                        @if (Model.Place.Rating.Value % 1 != 0)
+                        {
+                            <img src="~/images/rating_half.svg" alt="Оценка">
+                        }
+
+                        <b>@Model.Place.Rating.Value</b>
+                        <span class="tooltiptext">Рейтинг @Model.Place.Rating от 5</span>
+                    </div>
+                </div>
+            }
+            @if (Model.Place.PriceRange != null)
+            {
+                <div>
+                    <strong>Ценови диапазон</strong>
+                    <div id="place-price-range" class="tooltip">
+                        @for (var i = 0; i < Math.Round(Model.Place.PriceRange.Value); i++)
+                        {
+                            <img src="~/images/dollar.svg" alt="ценови диапазон">
+                        }
+                        <span class="tooltiptext">@Html.Raw(Model.Place.PriceRange > 2 ? "Висок" : (Model.Place.PriceRange > 1 ? "Среден" : "Нисък")) ценови диапазон</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA72eNRnGoPvivef05FZooLhETAID6jcw8&callback=initMap&libraries=&v=weekly" async></script>
+}

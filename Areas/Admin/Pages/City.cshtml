@@ -1,0 +1,92 @@
+﻿@page
+@model VeganMap.Areas.Admin.Pages.CityModel
+@{
+    ViewData["Page"] = "City";
+}
+
+<div class="container">
+    @if (Model.IsCreate)
+    {
+        <p class="fs-3">Добавяне на град</p>
+    }
+    else
+    {
+        <p class="fs-3">Редактиране на @Model.City.Name</p>
+    }
+    <form method="post" asp-area="admin" asp-page="city" class="row needs-validation" novalidate>
+         <div class="row">
+            <div class="col">
+                @if (Model.HasErrorMessage)
+                {
+                    Model.HasErrorMessage = false;
+                    <div class="alert alert-danger" role="alert">Грешка при записване на данните.</div>
+                }
+                else if (Model.HasSuccessMessage)
+                {
+                    <div class="alert alert-success" role="alert">Данните са записани успешно.</div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                 <div class="form-floating mb-3 has-validation">
+                    <input asp-for="City.Name" class="form-control" placeholder="Име на град">
+                    <label asp-for="City.Name">Име на град</label>
+                    <span asp-validation-for="City.Name" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                 <div class="form-floating mb-3 has-validation">
+                    <input asp-for="City.Acronym" class="form-control" placeholder="Акроним">
+                    <label asp-for="City.Acronym">Акроним</label>
+                    <span asp-validation-for="City.Acronym" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select asp-for="City.Active" asp-items="Model.NoYesOptions" class="form-control"></select>
+                    <label asp-for="City.Active">Активно</label>
+                    <span asp-validation-for="City.Active" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="City.PageTitle" class="form-control" placeholder="Заглавие на страница">
+                    <label asp-for="City.PageTitle">Заглавие на страница</label>
+                    <span asp-validation-for="City.PageTitle" class="invalid-feedback"></span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input asp-for="City.PageDescription" class="form-control" placeholder="Описание на страница">
+                    <label asp-for="City.PageDescription">Описание на страница</label>
+                    <span asp-validation-for="City.PageDescription" class="invalid-feedback"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <input asp-for="City.Id" type="hidden">
+            <div class="col-12">
+                @{
+                    var submitBtnText = Model.IsCreate ? "Добави" : "Редактирай";
+                }
+                <button class="btn btn-primary" type="submit">@submitBtnText</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+<script>
+    window.addEventListener('DOMContentLoaded', function() {
+
+        var validationErrorFields = document.getElementsByClassName('input-validation-error');
+        for (var i = 0; i < validationErrorFields.length; i++) {
+            validationErrorFields[i].classList.add('is-invalid');
+        }
+
+    }, false);
+</script>
+}

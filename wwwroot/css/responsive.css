@@ -1,0 +1,137 @@
+﻿@media all and (max-width: 1000px) {
+
+    #bars {
+        display: block;
+    }
+
+    body > header {
+        border-bottom: 1px solid #333;
+        position: fixed;
+        top: 0;
+        z-index: 9;
+        width: 100%;
+        height: 74px;
+    }
+
+    body > header > div {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    body > section:first-of-type {
+        margin-top: 74px !important;
+    }
+
+    #main-menu {
+        position: fixed;
+        left: 0;
+        top: 75px;
+        background-color: #fff;
+        z-index: 9;
+        transition: width 1s;
+        width: 0;
+        height: 100%;
+        overflow: hidden;
+        border-right: 1px solid #e8e9e9;
+    }
+
+    #main-menu ul {
+        flex-direction: column;
+    }
+
+    #main-menu ul > li {
+        margin-left: 0;
+    }
+
+    #main-container {
+        padding: 0 10px;
+    }
+
+    #main-container > div {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    #main-container-places ul {
+        flex-direction: column;
+    }
+
+    #main-container-places ul > li {
+        width: 100%;
+    }
+
+    body > footer > div {
+        width: 100%;
+    }
+
+    body > header nav a {
+        padding: 10px 0 10px 40px;
+        border-bottom: 1px solid #e8e9e9;
+    }
+
+    body > header nav a::after {
+        opacity: 0 !important;
+    }
+
+    body > header nav a:hover::after {
+        opacity: 0;
+    }
+
+    #contacts-container h2 {
+        font-size: 23px;
+    }
+
+    #contacts-container > div {
+        width: 100%;
+        padding-top: 20px;
+    }
+
+    #contacts-container form {
+        padding: 0 10px;
+    }
+
+    #contacts-container form > div {
+        flex-direction: column;
+    }
+
+    #contacts-container form > div > div {
+        padding-right: 0;
+    }
+
+    #contacts-container form > div > div:last-of-type {
+        padding-left: 0;
+    }
+
+    #breadcrumbs > div {
+        width: 100%;
+        padding-right: 20px;
+        box-sizing: border-box;
+    }
+
+    #place-container {
+        padding: 0 10px;
+    }
+
+    #place-container > div {
+        width: 100%;
+        flex-direction: column;
+        padding: 0 10px;
+    }
+
+    #place-container-left {
+        width: 100%;
+    }
+
+    #place-container-right {
+        width: 100%;
+    }
+
+    #place-container-left-map {
+        flex-direction: column;
+    }
+
+    #place-container-left-map > div:first-of-type {
+        width: 100%;
+        height: 300px;
+    }
+}

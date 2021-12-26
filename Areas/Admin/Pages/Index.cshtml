@@ -1,0 +1,60 @@
+﻿@page
+@model VeganMap.Areas.Admin.Pages.IndexModel
+@{
+    ViewData["Page"] = "Index";
+}
+
+<div id="homepage" class="container">
+    <div class="row">
+        <div class="col">
+            <p class="fs-4">Todos</p>
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item list-group-item-action">A list item</li>
+                <li class="list-group-item list-group-item-action">A list item</li>
+                <li class="list-group-item list-group-item-action">A list item</li>
+            </ol>
+        </div>
+
+        <div class="col">
+            <p class="fs-4">Съобщения</p>
+            <ul class="list-group">
+                @foreach (var feedback in Model.Feedbacks)
+                {
+                    <li class="list-group-item @Html.Raw(feedback.IsNew ? "list-group-item-warning" : string.Empty) d-flex justify-content-between list-group-item-action align-items-start">
+                        <div class="me-auto">
+                            <p>От: @feedback.Name / Email: @feedback.Email</p>
+                            <p class="mb-0">@feedback.Content</p>
+                        </div>
+                        <div class="btn-group" role="group">
+                            @if (feedback.IsNew)
+                            {
+                                <a asp-area="admin" asp-page-handler="MarkFeedback" asp-route-id="@feedback.Id" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Маркирай като прочетено">✔</a>
+                            }
+                            <a asp-area="admin" asp-page-handler="DeleteFeedback" asp-route-id="@feedback.Id" class="btn btn-outline-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Изтрии">
+                                <span class="btn-close"></span>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <p class="fs-4">Логове</p>
+            <ul class="list-group">
+                @foreach (var log in Model.Logs)
+                {
+                    <li class="list-group-item d-flex justify-content-between list-group-item-action align-items-start">
+                        <div class="me-auto">
+                            <p>Дата: @log.CreatedOn / Код: @log.Code</p>
+                            <p class="mb-0">@Html.Raw(log.Content.Replace(Environment.NewLine, "<br>"))</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col"></div>
+    </div>
+</div>

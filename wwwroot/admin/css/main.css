@@ -1,0 +1,20 @@
+﻿#place-image-container ul {
+    display: flex;
+    list-style-type: none;
+}
+
+#place-image-container li {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+#place-image-container img {
+    width: 120px;
+}
+
+#homepage ul {
+    max-height: 500px !important;
+    overflow-y: scroll;
+    word-break: break-all;
+}

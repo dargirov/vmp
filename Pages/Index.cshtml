@@ -1,0 +1,94 @@
+﻿@page
+@model VeganMap.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["Page"] = "Index";
+}
+
+<section>
+    <div id="map" data-places="@Model.PlacesData"></div>
+</section>
+
+<section id="main-container">
+    <div id="main-container-info">
+        <strong>Добре дошли на ....</strong>
+        <p>Този сайт се разработва с цел да помогне на хората, които са на растителен хранителен режим.</p>
+        <p>Важно е да се знае, че веган храненето не означава задължително здравословно хранене. То може да бъде такова, ако се избягват полуфабрикатите (веган джънка) и концентрираната мазнина.</p>
+        <p>Затова вижте по-долу легендата, която описва видовете заведения, според храната, която предлагат и идеологията, която следват:</p>
+        <p>Моля имайте предвид, че заведенията, които предлагат изцяло здравословна храна (без джънк и концентрирани мазнини) не са включени с отделна иконка, тъй като за момента такова заведение е само 1, това е Витарама и е whole food plant based (WFPB), т.е. базирано на цели растителни храни без концентрирана мазнина.</p>
+        <ol>
+            <li>Веган заведения</li>
+            <li>Заведения с растителна храна</li>
+            <li>Вегетариански, които имат веган избор в менюто</li>
+            <li>Заведения, които имат веган избор в менюто</li>
+        </ol>
+    </div>
+    <div id="main-container-filter">
+        <ul>
+            <li><label><input type="checkbox" checked="checked" data-type="@((int)VeganMap.Models.PlaceTypeEnum.Vegan)"> Веган</label></li>
+            <li><label><input type="checkbox" checked="checked" data-type="@((int)VeganMap.Models.PlaceTypeEnum.AnyWithVegan)"> С веган опции</label></li>
+        </ul>
+    </div>
+    <div id="main-container-places">
+        <ul>
+            @foreach (var place in Model.Places)
+            {
+                <li data-type="@((int)place.Type)">
+                    <a asp-page="place" asp-route-acronym="@place.Acronym" class="place-link-container">
+                        <strong>@place.Name</strong>
+                        <ol class="place-rating">
+                            @if (place.Type == VeganMap.Models.PlaceTypeEnum.Vegan)
+                            {
+                                <li class="tooltip"><img src="~/images/vegan.svg" alt="веган"><span class="tooltiptext">Само веган храна</span></li>
+                            }
+                            @if (place.Rating != null)
+                            {
+                                <li class="tooltip">
+                                    @for (var i = 0; i < Math.Truncate(place.Rating.Value); i++)
+                                    {
+                                        <img src="~/images/rating.svg" alt="Оценка">
+                                    }
+                                    @if (place.Rating.Value % 1 != 0)
+                                    {
+                                        <img src="~/images/rating_half.svg" alt="Оценка">
+                                    }
+                                    <span class="tooltiptext">Рейтинг @place.Rating от 5</span>
+                                </li>
+                            }
+                            @if (place.PriceRange != null)
+                            {
+                                <li class="tooltip">
+                                    @for (var i = 0; i < Math.Round(place.PriceRange.Value); i++)
+                                    {
+                                        <img src="~/images/dollar.svg" alt="ценови диапазон">
+                                    }
+                                    <span class="tooltiptext">@Html.Raw(place.PriceRange > 2 ? "Висок" : (place.PriceRange > 1 ? "Среден" : "Нисък")) ценови диапазон</span>
+                                </li>
+                            }
+                        </ol>
+                        <p>@place.ShortDescription</p>
+                        <p class="address">@place.City.Name, @place.Address</p>
+                    </a>
+                    <ol class="place-links">
+                        @if (!string.IsNullOrEmpty(place.Website))
+                        {
+                            <li><a href="@place.Website" target="_blank" class="tooltip" rel="nofollow"><img src="~/images/www.svg" alt="Web сайт"><span class="tooltiptext">Официален сайт</span></a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(place.Facebook))
+                        {
+                            <li><a href="https://www.facebook.com/@place.Facebook" target="_blank" class="tooltip" rel="nofollow"><img src="~/images/facebook.svg" alt="Facebook страница"><span class="tooltiptext">Facebook</span></a></li>
+                        }
+                        @if (!string.IsNullOrEmpty(place.Instagram))
+                        {
+                            <li><a href="https://www.instagram.com/@place.Instagram" target="_blank" class="tooltip" rel="nofollow"><img src="~/images/instagram.svg" alt="Instagram страница"><span class="tooltiptext">Instagram</span></a></li>
+                        }
+                    </ol>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA72eNRnGoPvivef05FZooLhETAID6jcw8&callback=initMap&libraries=&v=weekly" async></script>
+}

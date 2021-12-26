@@ -1,0 +1,44 @@
+﻿@page
+@model VeganMap.Pages.ContactModel
+@{
+    ViewData["Title"] = "За контакти";
+    ViewData["Page"] = "Contact";
+}
+
+<section id="contacts-container">
+    <div>
+        <h2>Последвайте ни</h2>
+        <div id="contacts-container-social">
+            <ul>
+                <li><a href="" target="_blank"><img src="~/images/facebook3.svg" alt="Facebook"></a></li>
+                <li><a href="" target="_blank"><img src="~/images/instagram3.svg" alt="Instagram"></a></li>
+            </ul>
+        </div>
+        <h2>Изпратете ни съобщение</h2>
+        @if (Model.HasErrorMessage)
+        {
+            <div id="contacts-error">Възникна грешка. Попълнете всички полета и опитайте отново.</div>
+        }
+        @if (Model.HasSuccessMessage)
+        {
+            <div id="contacts-success">Съобщението е изпратено успешно.</div>
+        }
+
+        <form method="post" asp-page="contact">
+            <div>
+                <div>
+                    <input asp-for="Name" placeholder="Име">
+                </div>
+                <div>
+                    <input asp-for="Email" placeholder="Email адрес">
+                </div>
+            </div>
+            <div>
+                <textarea asp-for="Content" placeholder="Съобщение"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Изпрати">
+            </div>
+        </form>
+    </div>
+</section>

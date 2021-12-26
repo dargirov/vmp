@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/admin/css/main.css" rel="stylesheet">
+    <title>Административна част</title>
+</head>
+<body>
+
+    <header class="mb-3 border-bottom bg-light">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="admin" asp-page="index"><img src="~/images/logo.svg" style="height: 23px;"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link @Html.Raw((string)ViewData["Page"] == "Index" ? "active" : string.Empty)" asp-area="admin" asp-page="index">Начало</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @Html.Raw((string)ViewData["Page"] == "Place" ? "active" : string.Empty)" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Места
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-area="admin" asp-page="place">Добави</a></li>
+                                    <li><a class="dropdown-item" asp-area="admin" asp-page="placelist">Виж всички</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle @Html.Raw((string)ViewData["Page"] == "City" ? "active" : string.Empty)" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Градове
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-area="admin" asp-page="city">Добави</a></li>
+                                    <li><a class="dropdown-item" asp-area="admin" asp-page="citylist">Виж всички</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="d-flex">
+                            <a class="btn btn-outline-primary btn-sm me-2" asp-area="" asp-page="index" target="_blank">Основен сайт →</a>
+                            <a class="btn btn-outline-secondary btn-sm" asp-area="" asp-page="index">Изход</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    @RenderBody()
+
+    <script src="~/admin/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+</body>
+</html>
